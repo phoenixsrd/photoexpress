@@ -1,7 +1,8 @@
 const { neon } = require('@neondatabase/serverless');
 
 exports.handler = async (event, context) => {
-  const id = event.queryStringParameters.id;
+  const id = (event.queryStringParameters && event.queryStringParameters.id)
+    || event.path.split('/').pop();
 
   if (!id) return { statusCode: 400, body: 'ID Missing' };
 
