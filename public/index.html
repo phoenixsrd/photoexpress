@@ -6,7 +6,6 @@
     <title>Photo Express - Hospedagem Rápida</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Animação simples para o logo */
         .shutter { transition: transform 0.5s ease; }
         .logo-container:hover .shutter { transform: rotate(90deg); }
     </style>
@@ -87,7 +86,6 @@
             const file = fileInput.files[0];
             if (!file) return alert('Selecione uma imagem primeiro.');
             
-            // Converter para Base64
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async () => {
