@@ -91,7 +91,7 @@
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async () => {
-                const base64Data = reader.result; // Inclui metadados "data:image/png;base64,..."
+                const base64Data = reader.result;
                 const isPrivate = document.getElementById('privateCheck').checked;
 
                 uploadBtn.disabled = true;
