@@ -5,7 +5,7 @@ exports.handler = async (event, context) => {
   if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
 
   try {
-    const sql = neon(process.env.NETLIFY_DATABASE_URL);
+    const sql = neon(process.env.DATABASE_URL);
     const { image, isPrivate } = JSON.parse(event.body);
     
     const id = nanoid(10);
