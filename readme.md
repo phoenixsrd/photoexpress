@@ -45,7 +45,7 @@ No painel do Netlify vá em **Site configuration → Environment variables** e a
 |---|---|
 | `DATABASE_URL` | Connection string do seu banco Neon |
 
-> Se você conectou o Neon diretamente pelo painel do Netlify, essa variável já é criada automaticamente.
+> Se você conectou o Neon diretamente pelo painel do Netlify ou Vercel, essa variável já é criada automaticamente.
 
 ### 4. Faça o deploy
 
