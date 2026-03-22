@@ -43,7 +43,7 @@ No painel do Netlify vá em **Site configuration → Environment variables** e a
 
 | Variável | Valor |
 |---|---|
-| `NETLIFY_DATABASE_URL` | Connection string do seu banco Neon |
+| `DATABASE_URL` | Connection string do seu banco Neon |
 
 > Se você conectou o Neon diretamente pelo painel do Netlify, essa variável já é criada automaticamente.
 
