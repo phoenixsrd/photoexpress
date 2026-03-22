@@ -77,9 +77,9 @@
     <script>
         const fileInput = document.getElementById('fileInput');
         const uploadBtn = document.getElementById('uploadBtn');
-        
+
         fileInput.addEventListener('change', () => {
-            if(fileInput.files.length > 0) {
+            if (fileInput.files.length > 0) {
                 uploadBtn.innerText = `Enviar: ${fileInput.files[0].name}`;
             }
         });
@@ -87,7 +87,7 @@
         uploadBtn.addEventListener('click', async () => {
             const file = fileInput.files[0];
             if (!file) return alert('Selecione uma imagem primeiro.');
-            
+
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async () => {
@@ -95,27 +95,32 @@
                 const isPrivate = document.getElementById('privateCheck').checked;
 
                 uploadBtn.disabled = true;
-                uploadBtn.innerText = "Processando...";
+                uploadBtn.innerText = 'Processando...';
 
                 try {
-                    const response = await fetch('/.netlify/functions/upload', {
+                    // Rota unificada — funciona no Netlify e no Vercel
+                    const response = await fetch('/upload', {
                         method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ image: base64Data, isPrivate })
                     });
+
                     const data = await response.json();
 
-                    if(data.url) {
+                    if (data.url) {
                         document.getElementById('resultArea').classList.remove('hidden');
                         const fullUrl = window.location.origin + data.url;
                         document.getElementById('shareUrl').value = fullUrl;
                         document.getElementById('embedCode').value = `<img src="${fullUrl}" alt="Photo Express Image" />`;
-                        uploadBtn.innerText = "Sucesso!";
+                        uploadBtn.innerText = 'Sucesso!';
                     } else {
-                        alert('Erro ao enviar.');
+                        alert('Erro ao enviar: ' + (data.error || 'Tente novamente.'));
+                        uploadBtn.innerText = 'Gerar Link';
                     }
                 } catch (e) {
                     console.error(e);
                     alert('Erro no servidor.');
+                    uploadBtn.innerText = 'Gerar Link';
                 } finally {
                     uploadBtn.disabled = false;
                 }
@@ -123,10 +128,10 @@
         });
 
         function copyToClipboard(id) {
-            const copyText = document.getElementById(id);
-            copyText.select();
-            document.execCommand("copy");
-            alert("Copiado!");
+            const el = document.getElementById(id);
+            el.select();
+            document.execCommand('copy');
+            alert('Copiado!');
         }
     </script>
 </body>
