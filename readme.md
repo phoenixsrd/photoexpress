@@ -9,19 +9,20 @@ Hospedagem rápida de imagens com link direto para compartilhamento. Suba uma im
 - Opção de link privado (não listado)
 - Armazenamento em banco de dados Neon (PostgreSQL)
 - Deploy serverless via Netlify Functions
+- Deploy serverless via Vercel Functions
 
 ## 🛠️ Tecnologias
 
 - **Frontend:** HTML, Tailwind CSS
-- **Backend:** Netlify Functions (Node.js)
+- **Backend:** Netlify Functions & Vercel Functions (Node.js)
 - **Banco de dados:** Neon (PostgreSQL serverless)
 - **Dependências:** `@neondatabase/serverless`, `nanoid`
 
 ## 🚀 Como fazer o deploy
 
-### 1. Clone ou faça upload do projeto no Netlify
+### 1. Clone ou faça upload do projeto no Netlify & Vercel
 
-Conecte o repositório no painel do Netlify ou arraste a pasta do projeto.
+Conecte o repositório no painel do Netlify ou Vercel e arraste a pasta do projeto.
 
 ### 2. Crie a tabela no Neon
 
@@ -39,7 +40,7 @@ CREATE TABLE IF NOT EXISTS images (
 
 ### 3. Configure a variável de ambiente
 
-No painel do Netlify vá em **Site configuration → Environment variables** e adicione:
+No painel do Netlify ou Vercel vá em **Site configuration → Environment variables** e adicione:
 
 | Variável | Valor |
 |---|---|
