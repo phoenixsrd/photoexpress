@@ -58,6 +58,9 @@ Após configurar a variável, acesse **Deploys → Trigger deploy → Deploy sit
 
 ```
 PhotosExpress/
+  api/
+  upload.js        # Recebe a imagem e salva no banco
+  image.js         # Recupera e serve a imagem pelo ID
   functions/
     upload.js       # Recebe a imagem e salva no banco
     image.js        # Recupera e serve a imagem pelo ID
