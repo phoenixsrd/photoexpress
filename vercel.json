@@ -1,0 +1,17 @@
+{
+  "outputDirectory": "public",
+  "functions": {
+    "api/upload.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    },
+    "api/image.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    { "source": "/upload",   "destination": "/api/upload"       },
+    { "source": "/img/:id",  "destination": "/api/image?id=:id" }
+  ]
+}
