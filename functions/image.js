@@ -1,31 +1,42 @@
 const { neon } = require('@neondatabase/serverless');
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   const id = (event.queryStringParameters && event.queryStringParameters.id)
     || event.path.split('/').pop();
 
-  if (!id) return { statusCode: 400, body: 'ID Missing' };
-
-  const sql = neon(process.env.DATABASE_URL);
-  
-  const result = await sql`SELECT image_data, mime_type, is_private FROM images WHERE id = ${id}`;
-
-  if (result.length === 0) {
-    return { statusCode: 404, body: 'Imagem não encontrada' };
+  if (!id) {
+    return { statusCode: 400, body: 'ID da imagem não informado' };
   }
 
-  const img = result[0];
+  try {
+    const sql = neon(process.env.DATABASE_URL);
 
-  const base64Data = img.image_data.split(',')[1];
-  const buffer = Buffer.from(base64Data, 'base64');
+    const result = await sql`
+      SELECT image_data, mime_type, is_private
+      FROM images
+      WHERE id = ${id}
+    `;
 
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': img.mime_type,
-      'Cache-Control': 'public, max-age=86400'
-    },
-    body: buffer.toString('base64'),
-    isBase64Encoded: true,
-  };
+    if (result.length === 0) {
+      return { statusCode: 404, body: 'Imagem não encontrada' };
+    }
+
+    const img = result[0];
+    const base64Data = img.image_data.split(',')[1];
+    const buffer = Buffer.from(base64Data, 'base64');
+
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': img.mime_type,
+        'Cache-Control': 'public, max-age=86400'
+      },
+      body: buffer.toString('base64'),
+      isBase64Encoded: true,
+    };
+
+  } catch (error) {
+    console.error('Erro ao buscar imagem:', error);
+    return { statusCode: 500, body: 'Erro interno ao buscar imagem' };
+  }
 };
