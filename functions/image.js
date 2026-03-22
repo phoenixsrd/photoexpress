@@ -6,7 +6,7 @@ exports.handler = async (event, context) => {
 
   if (!id) return { statusCode: 400, body: 'ID Missing' };
 
-  const sql = neon(process.env.NETLIFY_DATABASE_URL);
+  const sql = neon(process.env.DATABASE_URL);
   
   const result = await sql`SELECT image_data, mime_type, is_private FROM images WHERE id = ${id}`;
 
