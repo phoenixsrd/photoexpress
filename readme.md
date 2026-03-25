@@ -74,7 +74,3 @@ PhotosExpress/
 ## 🔒 Privacidade
 
 Ao marcar a opção **Link Privado**, a imagem não aparece em nenhuma listagem pública. O acesso só é possível com o link gerado, que contém um ID único de 10 caracteres gerado pelo `nanoid`.
-
-## 📄 Licença
-
-MIT — use à vontade.
