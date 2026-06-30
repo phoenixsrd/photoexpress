@@ -1,5 +1,4 @@
-const { neon } = require('@neondatabase/serverless');
-const { nanoid } = require('nanoid');
+const { saveImage, ValidationError } = require('../lib/imageStore');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -7,8 +6,6 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const sql = neon(process.env.DATABASE_URL);
-
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     const { image, isPrivate } = body;
 
@@ -16,21 +13,13 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Nenhuma imagem enviada' });
     }
 
-    const id = nanoid(10);
-    const mimeType = image.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0];
-
-    await sql`
-      INSERT INTO images (id, image_data, is_private, mime_type)
-      VALUES (${id}, ${image}, ${isPrivate ?? false}, ${mimeType})
-    `;
-
-    return res.status(200).json({
-      success: true,
-      id: id,
-      url: `/img/${id}`
-    });
+    const result = await saveImage(image, isPrivate);
+    return res.status(200).json({ success: true, ...result });
 
   } catch (error) {
+    if (error instanceof ValidationError) {
+      return res.status(400).json({ error: error.message });
+    }
     console.error('Erro ao salvar imagem:', error);
     return res.status(500).json({ error: 'Erro ao salvar imagem' });
   }
