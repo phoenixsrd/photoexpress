@@ -1,4 +1,4 @@
-const { neon } = require('@neondatabase/serverless');
+const { getImage } = require('../lib/imageStore');
 
 exports.handler = async (event) => {
   const id = (event.queryStringParameters && event.queryStringParameters.id)
@@ -9,29 +9,19 @@ exports.handler = async (event) => {
   }
 
   try {
-    const sql = neon(process.env.DATABASE_URL);
+    const img = await getImage(id);
 
-    const result = await sql`
-      SELECT image_data, mime_type, is_private
-      FROM images
-      WHERE id = ${id}
-    `;
-
-    if (result.length === 0) {
+    if (!img) {
       return { statusCode: 404, body: 'Imagem não encontrada' };
     }
-
-    const img = result[0];
-    const base64Data = img.image_data.split(',')[1];
-    const buffer = Buffer.from(base64Data, 'base64');
 
     return {
       statusCode: 200,
       headers: {
-        'Content-Type': img.mime_type,
+        'Content-Type': img.mimeType,
         'Cache-Control': 'public, max-age=86400'
       },
-      body: buffer.toString('base64'),
+      body: img.buffer.toString('base64'),
       isBase64Encoded: true,
     };
 
