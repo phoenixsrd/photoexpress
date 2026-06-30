@@ -72,7 +72,7 @@ PhotosExpress/
     index.html      # Interface do usuário
   netlify.toml      # Configuração do Netlify
   package.json      # Dependências do projeto
-  README.md
+  readme.md
 ```
 
 ## 🔒 Privacidade
